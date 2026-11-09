@@ -1,0 +1,33 @@
+name: Auto Update Crypto Data
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # غادي يخدم أوتوماتيكياً كل نهار مع منتصف الليل
+  workflow_dispatch: дозволяє تشغيله يدوياً متى بغيتي
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas requests numpy pyarrow
+
+      - name: Run script
+        run: python crypto_collector.py
+
+      - name: Commit and push updated data
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "bot@github.com"
+          git add crypto_market_historical_1h.csv crypto_market_historical_1h.parquet
+          git commit -m "Auto-update crypto dataset [skip ci]" || exit 0
+          git push
