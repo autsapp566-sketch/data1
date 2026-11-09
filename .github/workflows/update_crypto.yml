@@ -31,3 +31,11 @@ jobs:
           git add crypto_market_historical_1h.csv crypto_market_historical_1h.parquet
           git commit -m "Auto-update crypto dataset [skip ci]" || exit 0
           git push
+
+      - name: Push to Kaggle
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        run: |
+          pip install kaggle
+          kaggle datasets version -p . -m "Automated data update from GitHub Actions" --dir-mode update
