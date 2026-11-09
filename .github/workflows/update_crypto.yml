@@ -38,4 +38,4 @@ jobs:
           KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
         run: |
           pip install kaggle
-          kaggle datasets version -p . -m "Automated data update from GitHub Actions" --dir-mode update
+          kaggle datasets version -p . -m "Automated data update from GitHub Actions"
